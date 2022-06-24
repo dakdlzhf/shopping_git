@@ -12,7 +12,7 @@ img {
   display:inline;
  
 }
- 
+ <!-- css  -->
 </style>
 </head>
 <body> 

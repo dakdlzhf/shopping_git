@@ -10,15 +10,6 @@
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
 <script type="text/javascript">
-	//page 가 로딩되는순간 처리하겠다 $(function(){})
-	/*$(function(){
-		if('${empty list}'){
-			$("tfoot").hide();
-			
-		}else{
-			$("tfoot").show();
-		}
-	})*/
 
 	function read(contentsno) {
 		var url = "/contents/detail/"+contentsno+"/?nowPage=1";

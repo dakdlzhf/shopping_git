@@ -29,7 +29,7 @@
 		  }else if(select.disabled){
 			  select[i].value = 0; //비활성화된경우 사이즈값 0으로
 		  }
-		  let url = "/order/create/cart/${dto.contentsno}/"+count+"/"+select[i].value
+		  let url = "/order/create/order/${dto.contentsno}/"+count+"/"+select[i].value
 		  location.href= url;
 		
 	}

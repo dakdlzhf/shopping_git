@@ -41,4 +41,10 @@ public class CartServiceImpl implements CartService {
     return mapper.create(cartDTO);
   }
 
+  @Override
+  public void deleteAll(String id) {
+    mapper.deleteAll(id);
+    
+  }
+
 }

@@ -85,7 +85,7 @@ function order(tot){
 	
 	<li class="list-group-item" style="font-size:large;color: red" >
 	총주문 금액 ${tot} 원 +  배송비 3000 원 = 최종 결재금액 ${tot+3000 }원 
-	<a href="javascript:order('${tot}')">
+	<a href="javascript:order('${tot+3000}')">
 	<img src='/svg/wallet.svg' title="결제하기" style="width:30px;padding-left:10px">
 	</a>
   </ul>

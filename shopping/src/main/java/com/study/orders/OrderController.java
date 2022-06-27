@@ -3,6 +3,7 @@ package com.study.orders;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.study.cart.CartService;
 import com.study.contents.ContentsDTO;
 import com.study.contents.ContentsService;
 import com.study.member.MemberDTO;
@@ -29,8 +32,78 @@ public class OrderController {
   private ContentsService cservice;
   
   @Autowired
+  @Qualifier("com.study.orders.OrderServiceImpl")
+  private OrderService service;
+  
+  @Autowired
   @Qualifier("com.study.member.MemberServiceImpl")
   private MemberService mservice;
+  
+  @Autowired
+  @Qualifier("com.study.cart.CartServiceImpl")
+  private CartService cartservice;
+  
+  @PostMapping("/order/create/{str}") //str 로 cart 에서온건지 detail 에서 온건지확인
+  public String create(
+      @PathVariable String str,
+      int tot,String payment,String reqtext,
+      HttpServletRequest request,HttpSession session){
+    String id = (String)session.getAttribute("id");
+    String mname = (String)session.getAttribute("mname");
+    
+    OrdersDTO dto = new OrdersDTO();
+    dto.setId(id);
+    dto.setMname(mname);
+    dto.setPayment(payment);
+    dto.setTotal(tot);
+    dto.setReqtext(reqtext);
+    
+    List<OrderdetailDTO> list = new ArrayList<OrderdetailDTO>();
+    //카트에서 여러개가 올경우 상품들,수량들 이든 디테일에서 하나의 주문이 들어오든지, list 로 가지고간다 
+    
+    //str 이 반드시 들어오기떄문에 이런코드를 사용한거지만 null 일수도있다면 nullPointException 이 발생안되게 처리해줘야한다.
+    if(str.equals("cart")) {
+      String cno = request.getParameter("cno"); //상품번호들
+      String qty = request.getParameter("qty"); //상품수량들
+      String size = request.getParameter("size"); //상품사이즈들
+      //여러개일수도 있으니 split 으로 분리 처리한다.
+      
+      String[] no = cno.split(","); //문자열 
+      for(int i = 0 ; i< no.length ; i++) {
+        int contentsno = Integer.parseInt(no[i]);
+        ContentsDTO cdto = cservice.read(contentsno);
+        OrderdetailDTO oddto = new OrderdetailDTO();
+        oddto.setContentsno(contentsno);
+        oddto.setPname(cdto.getPname());
+        oddto.setQuantity(Integer.parseInt(qty.split(",")[i]));
+        oddto.setSize(size.split(",")[i]);
+        list.add(oddto);
+      }
+      
+    }else if(str.equals("order")) {
+      int contentsno = Integer.parseInt(request.getParameter("contentsno"));
+      ContentsDTO cdto = cservice.read(contentsno);
+      OrderdetailDTO oddto = new OrderdetailDTO();
+      oddto.setContentsno(contentsno);
+      oddto.setPname(cdto.getPname());
+      oddto.setQuantity(Integer.parseInt(request.getParameter("qty")));
+      oddto.setSize(request.getParameter("size"));
+      list.add(oddto);
+    }
+    dto.setList(list);
+      
+    try {
+      service.create(dto);
+      if(str.equals("cart")) 
+        cartservice.deleteAll(id); //장바구니 비우기
+      return "redirect:/member/mypage";
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "error";
+    }
+    
+  }
   
   //상세페이지에서 주문 눌러서 요청한코드
   @GetMapping("/order/create/order/{contentsno}/{quantity}/{size}")
@@ -101,4 +174,6 @@ public class OrderController {
     
     return "/order/create";
   }
+  
+  
 }

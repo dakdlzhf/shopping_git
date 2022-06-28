@@ -44,6 +44,9 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20201115'
      // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
  	implementation group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.6'
+ 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {

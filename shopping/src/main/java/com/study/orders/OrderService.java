@@ -11,4 +11,6 @@ public interface OrderService {
 
   int total(Map map);
 
+  int updateState(Map map);
+
 }

@@ -17,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.study.cart.CartService;
 import com.study.contents.ContentsDTO;
@@ -43,6 +45,19 @@ public class OrderController {
   @Autowired
   @Qualifier("com.study.cart.CartServiceImpl")
   private CartService cartservice;
+
+  @PostMapping("/order/update")
+  @ResponseBody
+  public String update(@RequestBody Map map) {
+    log.info("map :" + map);
+
+    int cnt = service.updateState(map);
+    if (cnt == 1) {
+      return "주문상태를 수정했습니다.";
+    } else {
+      return "수정 오류 입니다.";
+    }
+  }
 
   @RequestMapping("/admin/order/list")
   public String list(HttpServletRequest request) {

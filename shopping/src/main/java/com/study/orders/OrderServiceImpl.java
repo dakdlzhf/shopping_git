@@ -38,8 +38,14 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public int total(Map map) {
-    // TODO Auto-generated method stub
+    
     return mapper.total(map);
+  }
+
+  @Override
+  public int updateState(Map map) {
+    
+    return mapper.updateState(map);
   }
 
 }

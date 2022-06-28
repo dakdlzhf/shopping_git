@@ -108,9 +108,9 @@
     <td>${dto.reqtext}</td>
     <td>
  	<select id="choice-${v.index}" name="ostate">
-	    <option value="배송 준비중" <c:if test= "${ostate=='배송 준비중'}"> selected </c:if>>배송 준비중
-	    <option value="배송 중" <c:if test= "${ostate=='배송 중'}"> selected </c:if>>배송 중
-	    <option value="배송 완료" <c:if test= "${ostate=='배송 완료'}"> selected </c:if>>배송 완료
+	    <option value="배송 준비중" <c:if test= "${dto.ostate=='배송 준비중'}"> selected </c:if>>배송 준비중
+	    <option value="배송 중" <c:if test= "${dto.ostate=='배송 중'}"> selected </c:if>>배송 중
+	    <option value="배송 완료" <c:if test= "${dto.ostate=='배송 완료'}"> selected </c:if>>배송 완료
 	</select>
     </td>
     <td> <a href="javascript:update('${dto.orderno }','${v.index}')">

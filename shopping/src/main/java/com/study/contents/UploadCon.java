@@ -15,7 +15,7 @@ public class UploadCon {
 
     } else {
       // System.out.println("Linux");
-      path = "/home/ubuntu/deploy/contents/storage/";
+      path = "/root/ubuntu/deploy/contents/storage/";
     }
 
     return path;
